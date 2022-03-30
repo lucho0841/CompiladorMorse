@@ -42,8 +42,16 @@ namespace CompiladorMorse
             this.rbArchivo = new System.Windows.Forms.RadioButton();
             this.rbCodigo = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.categoria = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.posicionInicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.posicionFinal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnMorse
@@ -54,6 +62,7 @@ namespace CompiladorMorse
             this.btnMorse.TabIndex = 0;
             this.btnMorse.Text = "Convertir a Morse";
             this.btnMorse.UseVisualStyleBackColor = true;
+            this.btnMorse.Click += new System.EventHandler(this.btnMorse_Click);
             // 
             // tabControl1
             // 
@@ -146,6 +155,7 @@ namespace CompiladorMorse
             this.txtCodigo.Name = "txtCodigo";
             this.txtCodigo.Size = new System.Drawing.Size(787, 122);
             this.txtCodigo.TabIndex = 5;
+            this.txtCodigo.TextChanged += new System.EventHandler(this.txtCodigo_TextChanged);
             // 
             // rbArchivo
             // 
@@ -174,6 +184,7 @@ namespace CompiladorMorse
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.dataGridView1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -181,6 +192,46 @@ namespace CompiladorMorse
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Analizador léxico";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Lexema,
+            this.categoria,
+            this.numeroLinea,
+            this.posicionInicial,
+            this.posicionFinal});
+            this.dataGridView1.Location = new System.Drawing.Point(135, 18);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(544, 342);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // Lexema
+            // 
+            this.Lexema.HeaderText = "Lexema";
+            this.Lexema.Name = "Lexema";
+            // 
+            // categoria
+            // 
+            this.categoria.HeaderText = "Categoría";
+            this.categoria.Name = "categoria";
+            // 
+            // numeroLinea
+            // 
+            this.numeroLinea.HeaderText = "Numero Linea";
+            this.numeroLinea.Name = "numeroLinea";
+            // 
+            // posicionInicial
+            // 
+            this.posicionInicial.HeaderText = "Posición Inicial";
+            this.posicionInicial.Name = "posicionInicial";
+            // 
+            // posicionFinal
+            // 
+            this.posicionFinal.HeaderText = "Posicion Final";
+            this.posicionFinal.Name = "posicionFinal";
             // 
             // Form1
             // 
@@ -194,6 +245,8 @@ namespace CompiladorMorse
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -213,6 +266,12 @@ namespace CompiladorMorse
         private System.Windows.Forms.ListBox lbCodigo;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Button btnTexto;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Lexema;
+        private System.Windows.Forms.DataGridViewTextBoxColumn categoria;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numeroLinea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn posicionInicial;
+        private System.Windows.Forms.DataGridViewTextBoxColumn posicionFinal;
     }
 }
 

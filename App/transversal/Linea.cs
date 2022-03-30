@@ -17,13 +17,13 @@ namespace CompiladorMorse.App.modelo
             ContentLine = contentLine;
         }
 
-        public static Linea CreateLine(int lineNumber, string ContentLine)
+        public static Linea CrearLinea(int lineNumber, string ContentLine)
         {
             return new Linea(lineNumber, ContentLine);
         }
 
-        public int GetLineNumber() => LineNumber;
+        public int ObtenerNumeroLinea() => LineNumber;
 
-        public string GetContentLine() => ContentLine;
+        public string ObtenerContenidoLinea() => ContentLine;
     }
 }
