@@ -97,6 +97,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
         }
 
 
+
         public ComponenteLexico Analizador(bool Metodo)
         {
             resetearTexto();
