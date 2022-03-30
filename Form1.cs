@@ -20,6 +20,7 @@ namespace CompiladorMorse
         StreamReader streamReader;
         private string archiveReference;
         private Cache cache;
+        private string[] linesData;
         public Form1()
         {
             InitializeComponent();
@@ -27,10 +28,10 @@ namespace CompiladorMorse
             btnTexto.Enabled = false;
         }
 
-        private void Clear()
+       /* private void Clear()
         {
             Cache.Limpiar();
-        }
+        }*/
 
         private void rbCodigo_CheckedChanged(object sender, EventArgs e)
         {
@@ -69,7 +70,7 @@ namespace CompiladorMorse
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            Clear();
+            /*Clear();*/
             txtUrlArchivo.Text = "";
             txtCodigo.Text = "";
             lbCodigo.Items.Clear();
@@ -122,7 +123,7 @@ namespace CompiladorMorse
 
         private void leerConsola()
         {
-            string[] linesData = txtCodigo.Text.Split('\n');
+            linesData = txtCodigo.Text.Split('\n');
             for (int cont = 1; cont <= linesData.Length; cont++)
             {
                 lbCodigo.Items.Add(cont + " ->> " + linesData[cont - 1]);
@@ -138,22 +139,21 @@ namespace CompiladorMorse
             }
             else
             {
-                leerConsola();
+                //linesData = txtCodigo.Lines;
+                linesData = txtCodigo.Text.Split('\n');
+                //salidaDatos.Lines = lineasEntradas;
+                lbCodigo.Items.Clear();
+                Resetear();
+                for (int i = 0; i < linesData.Length; i++)
+                {
+                    Cache.obtenerCache().AgregarLinea(linesData[i]);
+                }
             }
             try
             {
-                AnalizadorLexico analizadorLexico = new AnalizadorLexico();
-                ComponenteLexico componente = analizadorLexico.DevolverSiguienteComponente();
+                LlenarTablas();
 
-                while (!componente.obtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
-                {
-                    componente = analizadorLexico.DevolverSiguienteComponente();
-                }
 
-                List<ComponenteLexico> componentes = TablaSimbolos.ObtenerSimbolos();
-
-                CargarDataGridView(dataGridView1, componentes);
-                MessageBox.Show("El proceso de compilación ha finalizado de forma exitosa");
             }
             catch (Exception)
             {
@@ -164,6 +164,25 @@ namespace CompiladorMorse
             
         }
 
+        private void Resetear()
+        {
+            Cache.obtenerCache().Limpiar();
+            //TablaMaestra.Limpiar();
+            dataGridView1.Rows.Clear();
+            
+        }
+
+        private void LlenarTablas()
+        {
+            List<ComponenteLexico> listaSimbolo = TablaSimbolos.ObtenerSimbolos();
+            for (int i = 0; i < listaSimbolo.Count; i++)
+            {
+                dataGridView1.Rows.Add(listaSimbolo[i].ObtenerLexema(), CategoriaGramatical.SIMBOLO, listaSimbolo[i].ObtenerNumeroLinea(), listaSimbolo[i].ObetenerPosicionInicial(), listaSimbolo[i].ObtenerPosicionFinal());
+
+            }
+
+        }
+
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -171,11 +190,7 @@ namespace CompiladorMorse
 
         private void CargarDataGridView(DataGridView view, List<ComponenteLexico> componentes)
         {
-            view.Rows.Clear();
-            foreach (ComponenteLexico componenteGuardado in componentes)
-            {
-                view.Rows.Add(componenteGuardado.lexema, componenteGuardado.categoria, componenteGuardado.numeroLinea, componenteGuardado.posicionInicial, componenteGuardado.posicionInicial);
-            }
+           
         }
 
         private void GuardarLineaEnCache()

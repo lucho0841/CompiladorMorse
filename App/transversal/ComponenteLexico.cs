@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompiladorMorse.App.transversal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,45 +9,58 @@ namespace CompiladorMorse.App
 {
     public class ComponenteLexico
     {
-        public int numeroLinea;
-        public int posicionInicial;
-        public int posicionFinal;
-        public string categoria;
-        public string lexema;
+        private String Lexema;
+        private String categoria = CategoriaGramatical.SIMBOLO;
+        private int NumeroLinea;
+        private int posicionInicial;
+        private int posicionFinal;
+        private String Tipo = CategoriaGramatical.SIMBOLO;
 
-        private ComponenteLexico(string categoria, string lexema, int numeroLinea, int posicionInicial, int posicionFinal)
+        private ComponenteLexico(String Lexedema, String categoria, int numeroLinea, int posicionInicial, int posicionFinal, String Componente)
         {
-            this.numeroLinea = numeroLinea;
-            this.posicionInicial = posicionInicial;
-            this.posicionFinal = posicionFinal;
+            this.Lexema = Lexedema;
             this.categoria = categoria;
-            this.lexema = lexema;
+            this.NumeroLinea = numeroLinea;
+            this.posicionFinal = posicionFinal;
+            this.posicionInicial = posicionInicial;
+            this.Tipo = Componente;
         }
 
-        public static ComponenteLexico Crear(string _lexema, string _categoria, int _numeroLinea, int _posicionInicial, int _posicionFinal)
+
+        public static ComponenteLexico CrearComponenteSimbolo(String Lexema, String categoria, int numeroLinea, int posicionInicial, int posicionFinal)
         {
-            return new ComponenteLexico(_lexema, _categoria, _numeroLinea, _posicionInicial, _posicionFinal);
+            return new ComponenteLexico(Lexema, categoria, numeroLinea, posicionInicial, posicionFinal, CategoriaGramatical.SIMBOLO);
         }
 
-        public int obtenerLinea()
+        public String ObtenerLexema()
         {
-            return numeroLinea;
+            return Lexema;
         }
-        public int obtenerPosInicial()
+       
+        public int ObtenerNumeroLinea()
         {
-            return posicionInicial;
+            return NumeroLinea;
         }
-        public int obtenerPosFinal()
+        public int ObtenerPosicionFinal()
         {
             return posicionFinal;
         }
-        public string obtenerCategoria()
+        public int ObetenerPosicionInicial()
         {
-            return categoria;
+            return posicionInicial;
         }
-        public string obtenerLexema()
+        public override string ToString()
         {
-            return lexema;
+            StringBuilder informacion = new StringBuilder();
+            informacion.Append("Categoria: ").Append(CategoriaGramatical.SIMBOLO).Append(" ");
+            informacion.Append("Lexema: ").Append(ObtenerLexema()).Append(" ");
+            informacion.Append("Numero de Linea: ").Append(ObtenerNumeroLinea()).Append(" ");
+            informacion.Append("Posicion Inicial de la linea: ").Append(ObetenerPosicionInicial()).Append(" ");
+            informacion.Append("Posicion final de la linea: ").Append(ObtenerPosicionFinal()).Append(" ");
+
+
+
+            return informacion.ToString();
         }
     }
 }

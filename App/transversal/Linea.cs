@@ -8,13 +8,13 @@ namespace CompiladorMorse.App.modelo
 {
     public class Linea
     {
-        private int LineNumber;
-        private string ContentLine;
+        private int NumeroLinea { get; set; }
+        private String Contenido { get; set; }
 
-        public Linea(int lineNumber, string contentLine)
+        private Linea(int NumeroLinea, String Contenido)
         {
-            LineNumber = lineNumber;
-            ContentLine = contentLine;
+            this.NumeroLinea = NumeroLinea;
+            this.Contenido = Contenido;
         }
 
         public static Linea CrearLinea(int lineNumber, string ContentLine)
@@ -22,8 +22,24 @@ namespace CompiladorMorse.App.modelo
             return new Linea(lineNumber, ContentLine);
         }
 
-        public int ObtenerNumeroLinea() => LineNumber;
+        public static Linea Crear(int NumeroLinea, String Contenido)
+        {
+            return new Linea(NumeroLinea, Contenido);
+        }
 
-        public string ObtenerContenidoLinea() => ContentLine;
+        public int ObtenerNumeroLinea()
+        {
+            return NumeroLinea;
+        }
+
+        public String ObtenerContenido()
+        {
+            return Contenido;
+        }
+
+        public bool EsFinArchivo()
+        {
+            return "@EOF@".Equals(Contenido);
+        }
     }
 }

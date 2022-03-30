@@ -8,7 +8,8 @@ namespace CompiladorMorse.App.transversal
 {
     public  class TablaSimbolos
     {
-		private Dictionary<String, List<ComponenteLexico>> SIMBOLOS = new Dictionary<String, List<ComponenteLexico>>();
+		private Dictionary<String, List<ComponenteLexico>> SIMBOLOS = new Dictionary<string, List<ComponenteLexico>>();
+
 		private static TablaSimbolos INSTANCIA = new TablaSimbolos();
 		private TablaSimbolos()
 		{
@@ -19,21 +20,22 @@ namespace CompiladorMorse.App.transversal
 			INSTANCIA.SIMBOLOS.Clear();
 		}
 
-		private List<ComponenteLexico> ObtenerSimbolo(String Lexema)
+		private List<ComponenteLexico> ObetenerSimbolo(String Lexema)
 		{
 			if (!SIMBOLOS.ContainsKey(Lexema))
 			{
 				SIMBOLOS.Add(Lexema, new List<ComponenteLexico>());
-			}
 
+			}
 			return SIMBOLOS[Lexema];
 		}
 
 		public static void Agregar(ComponenteLexico componente)
 		{
-			if (componente != null && !componente.obtenerLexema().Equals(""))
+			if (componente != null
+				&& !componente.ObtenerLexema().Equals(""))
 			{
-				INSTANCIA.ObtenerSimbolo(componente.obtenerLexema()).Add(componente);
+				INSTANCIA.ObetenerSimbolo(componente.ObtenerLexema()).Add(componente);
 			}
 		}
 

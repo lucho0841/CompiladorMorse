@@ -10,63 +10,62 @@ namespace CompiladorMorse.App.AnalizadorLexico
 {
     public class AnalizadorLexico
     {
-        private int apuntador;
-        private int numeroLineaActual;
-        private Linea LineaActual;
-        private string caracterActual;
-        private string contenidoLineaActual;
-        private string lexema;
+        private int puntero;
+        private int numeroDeLineaActual;
+        private Linea lineaActual;
+        private String caracterActual;
+        private String lexema;
         private int estadoActual;
-        private ComponenteLexico retorno;
-        private bool continuarAnalisis = false;
+        private bool continuarAnalisis = true;
+        private ComponenteLexico componente;
 
         public AnalizadorLexico()
         {
-            numeroLineaActual = 0;
+            this.numeroDeLineaActual = 0;
             CargarNuevaLinea();
         }
 
         private void CargarNuevaLinea()
         {
-            numeroLineaActual = numeroLineaActual + 1;
-            LineaActual = Cache.ObtenerLinea(numeroLineaActual);
-            contenidoLineaActual = LineaActual.ObtenerContenidoLinea();
-            numeroLineaActual = LineaActual.ObtenerNumeroLinea();
-            InicializarApuntador();
+            numeroDeLineaActual++;
+            lineaActual = Cache.obtenerCache().ObtenerLinea(numeroDeLineaActual);
+            numeroDeLineaActual = lineaActual.ObtenerNumeroLinea();
+            InicializarPuntero();
         }
 
-        private void InicializarApuntador()
+        private void InicializarPuntero()
         {
-            apuntador = 1;
+            puntero = 1;
         }
 
-        private void DevolverApuntador()
+        private void DevolverPuntero()
         {
-            if (apuntador > 1)
+            if (puntero > 1)
             {
-                apuntador = apuntador - 1;
+                puntero--;
             }
         }
 
-        private void AdelantarApuntador()
+        private void AdelantarPuntero()
         {
-            apuntador = apuntador + 1;
+            puntero++;
         }
 
         private void LeerSiguienteCaracter()
         {
-            if (CategoriaGramatical.FIN_ARCHIVO.Equals(contenidoLineaActual))
+            if (lineaActual.EsFinArchivo())
             {
-                caracterActual = contenidoLineaActual;
+                caracterActual = lineaActual.ObtenerContenido();
             }
-            else if (apuntador > contenidoLineaActual.Length)
+            else if (puntero > lineaActual.ObtenerContenido().Length)
             {
-                caracterActual = CategoriaGramatical.FIN_LINEA;
+                caracterActual = "@FL@";
+                AdelantarPuntero();
             }
             else
             {
-                caracterActual = contenidoLineaActual.Substring(apuntador - 1, 1);
-                AdelantarApuntador();
+                caracterActual = lineaActual.ObtenerContenido().Substring(puntero - 1, 1);
+                AdelantarPuntero();
             }
         }
 
@@ -97,7 +96,88 @@ namespace CompiladorMorse.App.AnalizadorLexico
             return esIgual(CategoriaGramatical.FIN_ARCHIVO, caracterActual);
         }
 
-        public ComponenteLexico DevolverSiguienteComponente()
+
+        public ComponenteLexico Analizador(bool Metodo)
+        {
+            resetearTexto();
+            while (continuarAnalisis)
+            {
+                if (estadoActual == 0)
+                {
+                    LeerSiguienteCaracter();
+
+                    while (" ".Equals(caracterActual))
+                    {
+                        LeerSiguienteCaracter();
+                    }
+
+                    if (esSimbolo())
+                    {
+                        estadoActual = 1;
+                        lexema = lexema + caracterActual;
+                    }
+                    else if (esFinArchivo())
+                    {
+                        estadoActual = 4;
+                    }
+                    else if (esFinLinea())
+                    {
+                        estadoActual = 3;
+                    }
+                    else
+                    {
+                        estadoActual = 2;
+                    }
+                }
+
+
+                else if (estadoActual == 1)
+                {
+                    continuarAnalisis = false;
+                    DevolverPuntero();
+                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                }
+                else if (estadoActual == 2)
+                {
+                    continuarAnalisis = false;
+                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                }
+                else if (estadoActual == 3)
+                {
+                    CargarNuevaLinea();
+                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                }
+                else if (estadoActual == 4)
+                {
+                    continuarAnalisis = false;
+                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                }
+            }
+
+            return TablaMaestra.SincronizarTabla(componente);
+        }
+
+        private void resetearTexto()
+        {
+            estadoActual = 0;
+            caracterActual = "";
+            continuarAnalisis = true;
+            ResetearLexema();
+            componente = null;
+        }
+
+        private void ResetearLexema()
+        {
+            lexema = "";
+        }
+
+        private void CrearComponenteSimbolo(String Lexema, String categoria, int NumeroLinea, int PosicionInicial, int PosicionFinal)
+        {
+            componente = ComponenteLexico.CrearComponenteSimbolo(Lexema, categoria, NumeroLinea, PosicionInicial, PosicionFinal);
+        }
+
+
+        /*public ComponenteLexico DevolverSiguienteComponente()
         {
             retorno = null;
             estadoActual = 0;
@@ -151,6 +231,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
 
             return retorno;
 
-        }
+        }*/
+
     }
 }

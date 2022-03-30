@@ -9,50 +9,42 @@ namespace CompiladorMorse.App.transversal
 {
     public class Cache
     {
-		public static List<Linea> lineas = new List<Linea>();
+		private Dictionary<int, Linea> Lineas = new Dictionary<int, Linea>();
+		private static Cache INSTANCIA = new Cache();
 
 		private Cache()
 		{
 		}
 
-		public static void Limpiar()
+		public static Cache obtenerCache()
 		{
-			lineas.Clear();
+			return INSTANCIA;
 		}
+
+		public void Limpiar()
+		{
+			Lineas.Clear();
+		}
+
 		public void AgregarLinea(String Contenido)
 		{
 			if (Contenido != null)
 			{
-				Linea linea;
-				if (lineas.Count() == 0)
-                {
-					linea = new Linea(1, Contenido);
-				} else
-                {
-					linea = new Linea(lineas.Count() + 1, Contenido);
-                }
-				lineas.Add(linea);
-				
+				int NumeroLinea = (Lineas.Count() == 0) ? 1 : Lineas.Keys.Max() + 1;
+				Lineas.Add(NumeroLinea, Linea.Crear(NumeroLinea, Contenido));
 			}
 
 		}
 
-		public static Linea ObtenerLinea(int NumeroLinea)
+		public Linea ObtenerLinea(int NumeroLinea)
 		{
-			Linea lineaRetorno;
-			if (ExisteLinea(NumeroLinea))
-            {
-				lineaRetorno = lineas[NumeroLinea - 1];
-            } else
-            {
-				lineaRetorno = new Linea(lineas.Count + 1, "@EOF@");
-            }
-			return lineaRetorno;
+			Linea LineaRetorno = Linea.Crear(Lineas.Count() + 1, "@EOF@");
+			if (Lineas.ContainsKey(NumeroLinea))
+			{
+				LineaRetorno = Lineas[NumeroLinea];
+			}
+			return LineaRetorno;
 		}
 
-		public static bool ExisteLinea(int numeroLinea)
-        {
-			return (lineas.Count() <= numeroLinea && numeroLinea < 0);
-        }
 	}
 }
