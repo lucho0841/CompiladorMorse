@@ -10,31 +10,39 @@ namespace CompiladorMorse.App
     public class ComponenteLexico
     {
         private String Lexema;
-        private String categoria = CategoriaGramatical.SIMBOLO;
+        private CategoriaGramatical categoria;
         private int NumeroLinea;
         private int posicionInicial;
         private int posicionFinal;
-        private String Tipo = CategoriaGramatical.SIMBOLO;
 
-        private ComponenteLexico(String Lexedema, String categoria, int numeroLinea, int posicionInicial, int posicionFinal, String Componente)
+        private ComponenteLexico(String Lexedema, CategoriaGramatical categoria, int numeroLinea, int posicionInicial, int posicionFinal)
         {
             this.Lexema = Lexedema;
             this.categoria = categoria;
             this.NumeroLinea = numeroLinea;
             this.posicionFinal = posicionFinal;
             this.posicionInicial = posicionInicial;
-            this.Tipo = Componente;
+        }
+
+        public ComponenteLexico()
+        {
+
         }
 
 
-        public static ComponenteLexico CrearComponenteSimbolo(String Lexema, String categoria, int numeroLinea, int posicionInicial, int posicionFinal)
+        public static ComponenteLexico CrearComponenteSimbolo(String Lexema, CategoriaGramatical categoria, int numeroLinea, int posicionInicial, int posicionFinal)
         {
-            return new ComponenteLexico(Lexema, categoria, numeroLinea, posicionInicial, posicionFinal, CategoriaGramatical.SIMBOLO);
+            return new ComponenteLexico(Lexema, categoria, numeroLinea, posicionInicial, posicionFinal);
         }
 
         public String ObtenerLexema()
         {
             return Lexema;
+        }
+
+        public CategoriaGramatical ObtenerCategoria()
+        {
+            return categoria;
         }
        
         public int ObtenerNumeroLinea()
@@ -45,7 +53,7 @@ namespace CompiladorMorse.App
         {
             return posicionFinal;
         }
-        public int ObetenerPosicionInicial()
+        public int ObtenerPosicionInicial()
         {
             return posicionInicial;
         }
@@ -55,7 +63,7 @@ namespace CompiladorMorse.App
             informacion.Append("Categoria: ").Append(CategoriaGramatical.SIMBOLO).Append(" ");
             informacion.Append("Lexema: ").Append(ObtenerLexema()).Append(" ");
             informacion.Append("Numero de Linea: ").Append(ObtenerNumeroLinea()).Append(" ");
-            informacion.Append("Posicion Inicial de la linea: ").Append(ObetenerPosicionInicial()).Append(" ");
+            informacion.Append("Posicion Inicial de la linea: ").Append(ObtenerPosicionInicial()).Append(" ");
             informacion.Append("Posicion final de la linea: ").Append(ObtenerPosicionFinal()).Append(" ");
 
 

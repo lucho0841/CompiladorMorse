@@ -112,6 +112,7 @@ namespace CompiladorMorse
             this.btnTexto.TabIndex = 10;
             this.btnTexto.Text = "Convertir a texto";
             this.btnTexto.UseVisualStyleBackColor = true;
+            this.btnTexto.Click += new System.EventHandler(this.btnTexto_Click);
             // 
             // label1
             // 
@@ -147,6 +148,7 @@ namespace CompiladorMorse
             this.txtUrlArchivo.Name = "txtUrlArchivo";
             this.txtUrlArchivo.Size = new System.Drawing.Size(681, 20);
             this.txtUrlArchivo.TabIndex = 6;
+            this.txtUrlArchivo.TextChanged += new System.EventHandler(this.txtUrlArchivo_TextChanged);
             // 
             // txtCodigo
             // 

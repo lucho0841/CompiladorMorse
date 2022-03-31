@@ -28,10 +28,10 @@ namespace CompiladorMorse
             btnTexto.Enabled = false;
         }
 
-       /* private void Clear()
+        private void Clear()
         {
-            Cache.Limpiar();
-        }*/
+            Cache.ObtenerCache().Limpiar();
+        }
 
         private void rbCodigo_CheckedChanged(object sender, EventArgs e)
         {
@@ -61,8 +61,8 @@ namespace CompiladorMorse
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            btnTexto.Enabled = true;
-            btnMorse.Enabled = true;
+            btnTexto.Enabled = false;
+            btnMorse.Enabled = false;
             rbCodigo.Checked = true;
             txtUrlArchivo.Hide();
             btnCargar.Hide();
@@ -70,10 +70,16 @@ namespace CompiladorMorse
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            /*Clear();*/
+            Clear();
             txtUrlArchivo.Text = "";
             txtCodigo.Text = "";
             lbCodigo.Items.Clear();
+            dataGridView1.Rows.Clear();
+            btnMorse.Enabled=true;
+            btnTexto.Enabled=true;
+            txtCodigo.Enabled = true;
+            txtUrlArchivo.Enabled = true;
+            btnCargar.Enabled = true;
         }
 
         private void btnCargar_Click(object sender, EventArgs e)
@@ -111,6 +117,10 @@ namespace CompiladorMorse
             {
                 string actualLine = streamReader.ReadLine();
                 lbCodigo.Items.Add(cont + " ->> " + actualLine);
+                if (actualLine != "")
+                {
+                    Cache.ObtenerCache().AgregarLinea(actualLine);
+                }
 
                 if (streamReader.EndOfStream)
                 {
@@ -136,37 +146,24 @@ namespace CompiladorMorse
             if (rbArchivo.Checked)
             {
                 ObtenerNombreArchivo();
+                LlenarTablas();
             }
             else
             {
-                //linesData = txtCodigo.Lines;
-                linesData = txtCodigo.Text.Split('\n');
-                //salidaDatos.Lines = lineasEntradas;
-                lbCodigo.Items.Clear();
-                Resetear();
-                for (int i = 0; i < linesData.Length; i++)
-                {
-                    Cache.obtenerCache().AgregarLinea(linesData[i]);
-                }
-            }
-            try
-            {
+                leerConsola();
+                GuardarLineaEnCache();
                 LlenarTablas();
-
-
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-            
+            btnMorse.Enabled = false;
+            btnTexto.Enabled = false;
+            txtCodigo.Enabled = false;
+            txtUrlArchivo.Enabled = false;
+            btnCargar.Enabled = false;
         }
 
         private void Resetear()
         {
-            Cache.obtenerCache().Limpiar();
+            Cache.ObtenerCache().Limpiar();
             //TablaMaestra.Limpiar();
             dataGridView1.Rows.Clear();
             
@@ -174,13 +171,31 @@ namespace CompiladorMorse
 
         private void LlenarTablas()
         {
-            List<ComponenteLexico> listaSimbolo = TablaSimbolos.ObtenerSimbolos();
-            for (int i = 0; i < listaSimbolo.Count; i++)
+            AnalizadorLexico analizador = new AnalizadorLexico();
+            ComponenteLexico componente = analizador.Analizador(true);
+            dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionInicial());
+            while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
             {
-                dataGridView1.Rows.Add(listaSimbolo[i].ObtenerLexema(), CategoriaGramatical.SIMBOLO, listaSimbolo[i].ObtenerNumeroLinea(), listaSimbolo[i].ObetenerPosicionInicial(), listaSimbolo[i].ObtenerPosicionFinal());
-
+                componente = analizador.Analizador(true);
+                if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))) {
+                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionInicial());
+                } 
             }
+        }
 
+        private void LlenarTablasConMorse()
+        {
+            AnalizadorLexico analizador = new AnalizadorLexico();
+            ComponenteLexico componente = analizador.Analizador(false);
+            dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+            while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
+            {
+                componente = analizador.Analizador(false);
+                if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)))
+                {
+                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionInicial());
+                }
+            }
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -199,7 +214,7 @@ namespace CompiladorMorse
             {
                 if (linea != null)
                 {
-                    cache.AgregarLinea(linea);
+                    Cache.ObtenerCache().AgregarLinea(linea);
                 }
             }
         }
@@ -209,11 +224,47 @@ namespace CompiladorMorse
             if (txtCodigo.Text.Length > 0)
             {
                 btnMorse.Enabled = true;
+                btnTexto.Enabled = true;
             } else
             {
                 btnMorse.Enabled = false;
+                btnTexto.Enabled= false;
             }
             
+        }
+
+        private void txtUrlArchivo_TextChanged(object sender, EventArgs e)
+        {
+            if (txtUrlArchivo.Text.Length > 0)
+            {
+                btnMorse.Enabled = true;
+                btnTexto.Enabled = true;
+            }
+            else
+            {
+                btnMorse.Enabled = false;
+                btnTexto.Enabled = false;
+            }
+        }
+
+        private void btnTexto_Click(object sender, EventArgs e)
+        {
+            if (rbArchivo.Checked)
+            {
+                ObtenerNombreArchivo();
+                LlenarTablasConMorse();
+            }
+            else
+            {
+                leerConsola();
+                GuardarLineaEnCache();
+                LlenarTablasConMorse();
+            }
+            btnTexto.Enabled = false;
+            btnMorse.Enabled = false;
+            txtCodigo.Enabled = false;
+            txtUrlArchivo.Enabled = false;
+            btnCargar.Enabled = false;
         }
     }
 }

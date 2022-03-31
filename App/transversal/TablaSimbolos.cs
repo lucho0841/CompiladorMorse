@@ -20,7 +20,7 @@ namespace CompiladorMorse.App.transversal
 			INSTANCIA.SIMBOLOS.Clear();
 		}
 
-		private List<ComponenteLexico> ObetenerSimbolo(String Lexema)
+		private List<ComponenteLexico> ObtenerSimbolo(String Lexema)
 		{
 			if (!SIMBOLOS.ContainsKey(Lexema))
 			{
@@ -35,7 +35,7 @@ namespace CompiladorMorse.App.transversal
 			if (componente != null
 				&& !componente.ObtenerLexema().Equals(""))
 			{
-				INSTANCIA.ObetenerSimbolo(componente.ObtenerLexema()).Add(componente);
+				INSTANCIA.ObtenerSimbolo(componente.ObtenerLexema()).Add(componente);
 			}
 		}
 

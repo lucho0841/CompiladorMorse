@@ -16,7 +16,7 @@ namespace CompiladorMorse.App.transversal
 		{
 		}
 
-		public static Cache obtenerCache()
+		public static Cache ObtenerCache()
 		{
 			return INSTANCIA;
 		}

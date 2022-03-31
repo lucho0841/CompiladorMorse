@@ -13,6 +13,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
         private int puntero;
         private int numeroDeLineaActual;
         private Linea lineaActual;
+        private List<string> caracteres;
         private String caracterActual;
         private String lexema;
         private int estadoActual;
@@ -25,10 +26,23 @@ namespace CompiladorMorse.App.AnalizadorLexico
             CargarNuevaLinea();
         }
 
+        public List<string> DeconstruirCadena(string[] data)
+        {
+            caracteres = new List<string>();
+            for (int i = 0; i < data.Length; i++)
+            {
+                for (int j = 0; j < data[i].Length; j++)
+                {
+                    caracteres.Add(data[i][j].ToString());
+                }
+            }
+            return caracteres;
+        }
+
         private void CargarNuevaLinea()
         {
             numeroDeLineaActual++;
-            lineaActual = Cache.obtenerCache().ObtenerLinea(numeroDeLineaActual);
+            lineaActual = Cache.ObtenerCache().ObtenerLinea(numeroDeLineaActual);
             numeroDeLineaActual = lineaActual.ObtenerNumeroLinea();
             InicializarPuntero();
         }
@@ -69,89 +83,694 @@ namespace CompiladorMorse.App.AnalizadorLexico
             }
         }
 
-        private bool esIgual(string cadenaUno, string cadenaDos)
+        /*private bool esIgual(string cadenaUno, string cadenaDos)
         {
             if (cadenaUno == null && cadenaDos == null)
             {
                 return false;
-            } else if (cadenaUno != null)
+            }
+            else if (cadenaUno != null)
             {
                 return true;
             }
             return cadenaUno.Equals(cadenaDos);
+        }*/
+
+        private bool esPunto()
+        {
+            return caracterActual.Equals(".");
+        }
+
+        private bool esGuion()
+        {
+            return caracterActual.Equals("-");
+        }
+
+        private bool esSeparador()
+        {
+            return caracterActual.Equals(" ");
         }
 
         private bool esSimbolo()
         {
-            return Char.IsLetterOrDigit(caracterActual.ToCharArray()[0]);
+            if (caracterActual.ToLower() == "a" || caracterActual.ToLower() == "e" || caracterActual.ToLower() == "i" || caracterActual.ToLower() == "o" || caracterActual.ToLower() == "u" || Char.IsDigit(caracterActual.ToCharArray()[0]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         private bool esFinLinea()
         {
-            return esIgual(CategoriaGramatical.FIN_LINEA, caracterActual);
+            return caracterActual.Equals("@FL@");
         }
 
         private bool esFinArchivo()
         {
-            return esIgual(CategoriaGramatical.FIN_ARCHIVO, caracterActual);
+            return caracterActual.Equals("@EOF@");
         }
 
 
 
-        public ComponenteLexico Analizador(bool Metodo)
+        public ComponenteLexico Analizador(bool metodo)
         {
             resetearTexto();
-            while (continuarAnalisis)
+            if (metodo)
             {
-                if (estadoActual == 0)
+                while (continuarAnalisis)
                 {
-                    LeerSiguienteCaracter();
-
-                    while (" ".Equals(caracterActual))
+                    if (estadoActual == 0)
                     {
                         LeerSiguienteCaracter();
+
+                        while (" ".Equals(caracterActual))
+                        {
+                            LeerSiguienteCaracter();
+                        }
+
+                        if (esSimbolo())
+                        {
+                            estadoActual = 1;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 4;
+                        }
+                        else if (esFinLinea())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 2;
+                        }
                     }
 
-                    if (esSimbolo())
-                    {
-                        estadoActual = 1;
-                        lexema = lexema + caracterActual;
-                    }
-                    else if (esFinArchivo())
-                    {
-                        estadoActual = 4;
-                    }
-                    else if (esFinLinea())
-                    {
-                        estadoActual = 3;
-                    }
-                    else
-                    {
-                        estadoActual = 2;
-                    }
-                }
 
+                    else if (estadoActual == 1)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 2)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo("?", CategoriaGramatical.ERROR, numeroDeLineaActual, puntero - 1, puntero - 1);
+                    }
+                    else if (estadoActual == 3)
+                    {
+                        continuarAnalisis = false;
+                        CargarNuevaLinea();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.FIN_LINEA, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 4)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.FIN_ARCHIVO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                }
+            } else
+            {
+                while (continuarAnalisis)
+                {
+                    if (estadoActual == 0)
+                    {
+                        LeerSiguienteCaracter();
 
-                else if (estadoActual == 1)
-                {
-                    continuarAnalisis = false;
-                    DevolverPuntero();
-                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
-                }
-                else if (estadoActual == 2)
-                {
-                    continuarAnalisis = false;
-                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
-                }
-                else if (estadoActual == 3)
-                {
-                    CargarNuevaLinea();
-                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
-                }
-                else if (estadoActual == 4)
-                {
-                    continuarAnalisis = false;
-                    CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        while (" ".Equals(caracterActual))
+                        {
+                            LeerSiguienteCaracter();
+                        }
+
+                        if (esPunto())
+                        {
+                            estadoActual = 1;
+                            lexema = lexema + caracterActual;
+                        } else if (esGuion())
+                        {
+                            estadoActual = 2;
+                            lexema = lexema + caracterActual;
+                        } else if (esFinLinea())
+                        {
+                            estadoActual = 4;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        } else
+                        {
+                            estadoActual = 13;
+                        }
+
+                    } else if (estadoActual == 1)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 6;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 7;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador())
+                        {
+                            estadoActual = 5;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 2)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 30;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 31;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 3)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.FIN_ARCHIVO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 4)
+                    {
+                        continuarAnalisis = false;
+                        CargarNuevaLinea();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.FIN_LINEA, numeroDeLineaActual, puntero - 1, puntero - 1);
+                    }
+                    else if (estadoActual == 5)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_E, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 6)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 10;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 11;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador())
+                        {
+                            estadoActual = 9;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 7)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 27;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador() || esFinLinea() || esFinArchivo())
+                        {
+                            estadoActual = 24;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 9)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_I, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 10)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 15;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 14;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 11)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 25;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador())
+                        {
+                            estadoActual = 12;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 12)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_U, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 13)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo("?", CategoriaGramatical.ERROR, numeroDeLineaActual, puntero - 1, puntero - 1);
+                    }
+                    else if (estadoActual == 14)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 17;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 18;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 15)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 23;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 17)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 20;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 18)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 21;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 20)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_5, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 21)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_4, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 23)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 51;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 24)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_A, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 25)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 26;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 26)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 50;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 27)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 28;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 28)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 29;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 29)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 52;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 30)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 32;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 31)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 37;
+                            lexema = lexema + caracterActual;
+                        }else if (esPunto())
+                        {
+                            estadoActual = 36;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 32)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 33;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 33)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 34;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 34)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 35;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 35)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_6, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 36)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 38;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 37)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 42;
+                            lexema = lexema + caracterActual;
+                        } else if (esGuion())
+                        {
+                            estadoActual = 43;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador())
+                        {
+                            estadoActual = 41;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 38)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 39;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 39)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 40;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 40)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_7, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 41)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_O, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 42)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 44;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 43)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 46;
+                            lexema = lexema + caracterActual;
+                        } else if (esGuion())
+                        {
+                            estadoActual = 47;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 44)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 45;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 45)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_8, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 46)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 48;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 47)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador())
+                        {
+                            estadoActual = 49;
+                        }
+                        else
+                        {
+                            estadoActual = 13;
+                        }
+                    }
+                    else if (estadoActual == 48)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_9, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 49)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_0, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 50)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_2, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 51)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_3, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+                    else if (estadoActual == 52)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_1, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                    }
+
                 }
             }
 
@@ -172,67 +791,9 @@ namespace CompiladorMorse.App.AnalizadorLexico
             lexema = "";
         }
 
-        private void CrearComponenteSimbolo(String Lexema, String categoria, int NumeroLinea, int PosicionInicial, int PosicionFinal)
+        private void CrearComponenteSimbolo(String Lexema, CategoriaGramatical categoria, int NumeroLinea, int PosicionInicial, int PosicionFinal)
         {
             componente = ComponenteLexico.CrearComponenteSimbolo(Lexema, categoria, NumeroLinea, PosicionInicial, PosicionFinal);
         }
-
-
-        /*public ComponenteLexico DevolverSiguienteComponente()
-        {
-            retorno = null;
-            estadoActual = 0;
-            lexema = "";
-            continuarAnalisis = true;
-
-            while (continuarAnalisis)
-            {
-                if (estadoActual == 0)
-                {
-                    LeerSiguienteCaracter();
-
-                    while(" ".Equals(caracterActual))
-                    {
-                        LeerSiguienteCaracter();
-                    }
-
-                    if (esSimbolo())
-                    {
-                        estadoActual = 1;
-                        lexema = lexema + caracterActual;
-                    } else if (esFinArchivo())
-                    {
-                        estadoActual = 4;
-                    } else if (esFinLinea())
-                    {
-                        estadoActual = 3;
-                    } else
-                    {
-                        estadoActual = 2;
-                    }
-                } else if (estadoActual == 1)
-                {
-                    continuarAnalisis = false;
-                    DevolverApuntador();
-                    retorno = ComponenteLexico.Crear(lexema, CategoriaGramatical.SIMBOLO, numeroLineaActual, apuntador - lexema.Length, apuntador - 1);
-                } else if (estadoActual == 2)
-                {
-                    continuarAnalisis = false;
-                    retorno = ComponenteLexico.Crear(lexema, CategoriaGramatical.ERROR, numeroLineaActual, apuntador - lexema.Length, apuntador - 1);
-                } else if (estadoActual == 3)
-                {
-                    CargarNuevaLinea();
-                    retorno = ComponenteLexico.Crear("", CategoriaGramatical.FIN_LINEA, numeroLineaActual, apuntador - lexema.Length, apuntador - 1);
-                } else if (estadoActual == 4)
-                {
-                    continuarAnalisis = false;
-                    retorno = ComponenteLexico.Crear(lexema, CategoriaGramatical.FIN_ARCHIVO, numeroLineaActual, apuntador - lexema.Length, apuntador - 1);
-                }
-            }
-
-            return retorno;
-
-        }*/
-
     }
 }
