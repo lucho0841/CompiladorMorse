@@ -173,12 +173,12 @@ namespace CompiladorMorse
         {
             AnalizadorLexico analizador = new AnalizadorLexico();
             ComponenteLexico componente = analizador.Analizador(true);
-            dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionInicial());
+            dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
             while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
             {
                 componente = analizador.Analizador(true);
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))) {
-                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionInicial());
+                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
                 } 
             }
         }
@@ -193,7 +193,7 @@ namespace CompiladorMorse
                 componente = analizador.Analizador(false);
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)))
                 {
-                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionInicial());
+                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
                 }
             }
         }
