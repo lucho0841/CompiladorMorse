@@ -56,11 +56,11 @@ namespace CompiladorMorse
             // 
             // btnMorse
             // 
-            this.btnMorse.Location = new System.Drawing.Point(282, 234);
+            this.btnMorse.Location = new System.Drawing.Point(275, 234);
             this.btnMorse.Name = "btnMorse";
-            this.btnMorse.Size = new System.Drawing.Size(91, 41);
+            this.btnMorse.Size = new System.Drawing.Size(98, 41);
             this.btnMorse.TabIndex = 0;
-            this.btnMorse.Text = "Convertir a Morse";
+            this.btnMorse.Text = "Lectura simbolos";
             this.btnMorse.UseVisualStyleBackColor = true;
             this.btnMorse.Click += new System.EventHandler(this.btnMorse_Click);
             // 
@@ -110,7 +110,7 @@ namespace CompiladorMorse
             this.btnTexto.Name = "btnTexto";
             this.btnTexto.Size = new System.Drawing.Size(89, 41);
             this.btnTexto.TabIndex = 10;
-            this.btnTexto.Text = "Convertir a texto";
+            this.btnTexto.Text = "Lectura Morse";
             this.btnTexto.UseVisualStyleBackColor = true;
             this.btnTexto.Click += new System.EventHandler(this.btnTexto_Click);
             // 
@@ -126,10 +126,12 @@ namespace CompiladorMorse
             // 
             // lbCodigo
             // 
+            this.lbCodigo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbCodigo.FormattingEnabled = true;
+            this.lbCodigo.ItemHeight = 16;
             this.lbCodigo.Location = new System.Drawing.Point(6, 290);
             this.lbCodigo.Name = "lbCodigo";
-            this.lbCodigo.Size = new System.Drawing.Size(787, 134);
+            this.lbCodigo.Size = new System.Drawing.Size(787, 132);
             this.lbCodigo.TabIndex = 8;
             // 
             // btnCargar
@@ -152,6 +154,7 @@ namespace CompiladorMorse
             // 
             // txtCodigo
             // 
+            this.txtCodigo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCodigo.Location = new System.Drawing.Point(6, 97);
             this.txtCodigo.Multiline = true;
             this.txtCodigo.Name = "txtCodigo";
