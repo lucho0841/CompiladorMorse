@@ -207,9 +207,9 @@ namespace CompiladorMorse
             this.numeroLinea,
             this.posicionInicial,
             this.posicionFinal});
-            this.dataGridView1.Location = new System.Drawing.Point(135, 18);
+            this.dataGridView1.Location = new System.Drawing.Point(68, 18);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(544, 342);
+            this.dataGridView1.Size = new System.Drawing.Size(643, 342);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -222,6 +222,7 @@ namespace CompiladorMorse
             // 
             this.categoria.HeaderText = "Categoría";
             this.categoria.Name = "categoria";
+            this.categoria.Width = 200;
             // 
             // numeroLinea
             // 
