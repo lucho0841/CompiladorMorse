@@ -187,8 +187,11 @@ namespace CompiladorMorse
         {
             AnalizadorLexico analizador = new AnalizadorLexico();
             ComponenteLexico componente = analizador.Analizador(false);
-            dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-            while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
+            if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO))
+            {
+                dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+            }
+            while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO)))
             {
                 componente = analizador.Analizador(false);
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)))

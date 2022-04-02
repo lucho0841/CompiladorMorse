@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CompiladorMorse.App.AnalizadorLexico
 {
@@ -223,13 +224,9 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 3;
                         }
-                        else if (esSeparador())
-                        {
-                            estadoActual = 13;
-                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
 
@@ -247,13 +244,17 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 7;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 5;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual= 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -641,7 +642,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 63;
                         }
-                        else if ( esFinArchivo())
+                        else if (esFinArchivo())
                         {
                             estadoActual = 13;
                         }
@@ -784,7 +785,12 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 35;
                         }
-                        else if (esPunto() || esGuion())
+                        else if (esGuion())
+                        {
+                            estadoActual = 87;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esPunto())
                         {
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
@@ -861,7 +867,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esGuion())
                         {
-                            estadoActual = 13;
+                            estadoActual = 82;
                             lexema = lexema + caracterActual;
                         }
                         else if (esSeparador() || esFinLinea())
@@ -961,7 +967,12 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 45;
                         }
-                        else if (esPunto() || esGuion())
+                        else if (esPunto())
+                        {
+                            estadoActual = 85;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
                         {
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
@@ -1092,6 +1103,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 57;
                         }
+                        else if (esPunto())
+                        {
+                            estadoActual = 89;
+                            lexema = lexema + caracterActual;
+                        }
                     }
                     else if (estadoActual == 57)
                     {
@@ -1112,7 +1128,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 60;
-                        } 
+                        }
                     }
                     else if (estadoActual == 60)
                     {
@@ -1219,6 +1235,15 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 74;
+                        }else if (esGuion())
+                        {
+                            estadoActual = 92;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 74)
@@ -1276,6 +1301,115 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         continuarAnalisis = false;
                         DevolverPuntero();
                         CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_Z, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 82)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 83;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 83)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 84;
+                        }
+                    }
+                    else if (estadoActual == 84)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_COMA, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 85)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 86;
+                        }
+                    }
+                    else if (estadoActual == 86)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_DOS_PUNTOS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 87)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 88;
+                        }
+                    }
+                    else if (estadoActual == 88)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_GUION, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 89)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 90;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 90)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 91;
+                        }
+                    }
+                    else if (estadoActual == 91)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_PARENTESIS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 92)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 93;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 93)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 91;
+                        }
+                    }
+                    else if (estadoActual == 94)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_COMILLAS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 95)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo("", CategoriaGramatical.ERROR_CRITICO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        MessageBox.Show("Error crítico, caracter no válido en " + lexema);
 
                     }
                 }
