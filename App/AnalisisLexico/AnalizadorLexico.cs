@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CompiladorMorse.App.AnalizadorLexico
 {
@@ -113,15 +114,16 @@ namespace CompiladorMorse.App.AnalizadorLexico
 
         private bool esSimbolo()
         {
-            if (caracterActual.ToLower() == "a" || caracterActual.ToLower() == "e" || caracterActual.ToLower() == "i" || caracterActual.ToLower() == "o" || caracterActual.ToLower() == "u" || Char.IsDigit(caracterActual.ToCharArray()[0]))
+            if (Char.IsLetterOrDigit(caracterActual.ToCharArray()[0]) || caracterActual.Equals(",")
+                || caracterActual.Equals(":") || caracterActual.Equals("-") || caracterActual.Equals("(")
+                || caracterActual.Equals(")") || caracterActual.Equals("'") || caracterActual.Equals("."))
             {
                 return true;
-            }
-            else
+            } else
             {
                 return false;
             }
-
+                
         }
 
         private bool esFinLinea()
@@ -179,6 +181,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         CrearComponenteSimbolo("?", CategoriaGramatical.ERROR, numeroDeLineaActual, puntero - 1, puntero - 1);
+                        //MessageBox.Show("Aunque el programa se encuentra bien escrito, faltaron componentes por evaluar...");
                     }
                     else if (estadoActual == 3)
                     {
@@ -223,13 +226,9 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 3;
                         }
-                        else if (esSeparador())
-                        {
-                            estadoActual = 13;
-                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
 
@@ -247,13 +246,17 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 7;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 5;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual= 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -276,11 +279,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -314,13 +317,17 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 11;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 9;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -332,7 +339,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 27;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinLinea() || esFinArchivo())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 24;
                         }
@@ -341,9 +348,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 65;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -378,11 +389,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -394,9 +405,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 25;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 12;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
                         }
                         else if (esPunto())
                         {
@@ -405,7 +420,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -423,6 +438,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             continuarAnalisis = false;
                             DevolverPuntero();
                             CrearComponenteSimbolo("?", CategoriaGramatical.ERROR, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                            //MessageBox.Show("Aunque el programa se encuentra bien escrito, faltaron componentes por evaluar...");
                         }
                         else
                         {
@@ -449,11 +465,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -476,18 +492,18 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 17)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinLinea() || esFinArchivo())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 20;
                         }
@@ -496,16 +512,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 18)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 21;
                         }
@@ -514,9 +534,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -535,7 +559,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     else if (estadoActual == 23)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 51;
                         }
@@ -544,9 +568,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -569,20 +597,24 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinLinea() || esFinArchivo())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 13;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 26)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinLinea() || esFinArchivo())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 50;
                         }
@@ -591,9 +623,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -616,11 +652,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -641,20 +677,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 63;
                         }
-                        else if ( esFinArchivo())
+                        else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 29)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 52;
                         }
@@ -663,9 +699,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -688,11 +728,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -715,11 +755,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -738,7 +778,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else if (esSeparador() || esFinLinea())
                         {
@@ -746,7 +786,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -765,7 +805,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else if (esSeparador() || esFinLinea())
                         {
@@ -773,25 +813,34 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 34)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 35;
                         }
-                        else if (esPunto() || esGuion())
+                        else if (esGuion())
+                        {
+                            estadoActual = 87;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esPunto())
                         {
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -820,11 +869,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -841,13 +890,17 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 43;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 41;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -861,7 +914,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esGuion())
                         {
-                            estadoActual = 13;
+                            estadoActual = 82;
                             lexema = lexema + caracterActual;
                         }
                         else if (esSeparador() || esFinLinea())
@@ -870,18 +923,18 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 39)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 40;
                         }
@@ -890,9 +943,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -921,13 +978,17 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 13;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -944,31 +1005,44 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 47;
                             lexema = lexema + caracterActual;
                         }
-                        else if (esSeparador() || esFinArchivo() || esFinLinea())
+                        else if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 13;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 44)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 45;
                         }
-                        else if (esPunto() || esGuion())
+                        else if (esPunto())
+                        {
+                            estadoActual = 85;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
                         {
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -981,7 +1055,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     else if (estadoActual == 46)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 48;
                         }
@@ -990,16 +1064,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 47)
                     {
                         LeerSiguienteCaracter();
-                        if (esSeparador() || esFinArchivo() || esFinLinea())
+                        if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 49;
                         }
@@ -1008,9 +1086,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 13;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
                         else
                         {
-                            estadoActual = 13;
+                            estadoActual = 95;
                             lexema = lexema + caracterActual;
                         }
                     }
@@ -1063,11 +1145,12 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         }
                         else if (esFinArchivo())
                         {
-                            estadoActual = 13;
+                            estadoActual = 3;
                         }
                         else
                         {
-
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 54)
@@ -1076,6 +1159,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 55;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 55)
@@ -1091,6 +1188,25 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 57;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 89;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 57)
@@ -1112,7 +1228,21 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 60;
-                        } 
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
                     }
                     else if (estadoActual == 60)
                     {
@@ -1161,6 +1291,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             estadoActual = 73;
                             lexema = lexema + caracterActual;
                         }
+                        else if (esGuion())
+                        {
+                            estadoActual = 96;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
                     }
                     else if (estadoActual == 66)
                     {
@@ -1190,6 +1334,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 70;
                         }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
                     }
                     else if (estadoActual == 70)
                     {
@@ -1205,6 +1363,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 72;
                         }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
                     }
                     else if (estadoActual == 72)
                     {
@@ -1219,6 +1391,24 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         if (esSeparador() || esFinLinea())
                         {
                             estadoActual = 74;
+                        }else if (esGuion())
+                        {
+                            estadoActual = 92;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
                         }
                     }
                     else if (estadoActual == 74)
@@ -1263,6 +1453,20 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         {
                             estadoActual = 80;
                         }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
                     }
                     else if (estadoActual == 80)
                     {
@@ -1276,6 +1480,317 @@ namespace CompiladorMorse.App.AnalizadorLexico
                         continuarAnalisis = false;
                         DevolverPuntero();
                         CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_Z, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 82)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 83;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 13;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 83)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 84;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 84)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_COMA, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 85)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 86;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 86)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_DOS_PUNTOS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 87)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 88;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 88)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_GUION, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 89)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esGuion())
+                        {
+                            estadoActual = 90;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 13;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 90)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 91;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 91)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_PARENTESIS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 92)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esPunto())
+                        {
+                            estadoActual = 93;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 13;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 93)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 94;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 94)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_COMILLAS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+
+                    }
+                    else if (estadoActual == 95)
+                    {
+                        continuarAnalisis = false;
+                        CrearComponenteSimbolo("", CategoriaGramatical.ERROR_CRITICO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        MessageBox.Show("Error crítico, caracter no válido en " + lexema);
+
+                    }
+                    else if (estadoActual == 96)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 13;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 97;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 97)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 13;
+                        }
+                        else if (esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esGuion())
+                        {
+                            estadoActual = 98;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 98)
+                    {
+                        LeerSiguienteCaracter();
+                        if (esSeparador() || esFinLinea())
+                        {
+                            estadoActual = 99;
+                        }
+                        else if (esGuion() || esPunto())
+                        {
+                            estadoActual = 13;
+                            lexema = lexema + caracterActual;
+                        }
+                        else if (esFinArchivo())
+                        {
+                            estadoActual = 3;
+                        }
+                        else
+                        {
+                            estadoActual = 95;
+                            lexema = lexema + caracterActual;
+                        }
+                    }
+                    else if (estadoActual == 99)
+                    {
+                        continuarAnalisis = false;
+                        DevolverPuntero();
+                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_PUNTO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                 }

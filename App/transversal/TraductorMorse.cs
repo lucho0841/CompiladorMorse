@@ -49,5 +49,6 @@ namespace CompiladorMorse.App.transversal
         public static string GUION = "-....-";
         public static string PARENTESIS = "-.--.-";
         public static string COMILLAS = ".-..-.";
+        public static string PUNTO = ".-.-.-";
     }
 }
