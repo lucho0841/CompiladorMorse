@@ -47,12 +47,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\AnalisisLexico\AnalizadorLexico.cs" />
+    <Compile Include="App\Error\ComponenteError.cs" />
+    <Compile Include="App\Error\ManejadorError.cs" />
+    <Compile Include="App\Error\TipoError.cs" />
+    <Compile Include="App\tablaComponentes\Tabla.cs" />
+    <Compile Include="App\tablaComponentes\TablaMaestra.cs" />
+    <Compile Include="App\tablaComponentes\TablaPalabraReservada.cs" />
+    <Compile Include="App\tablaComponentes\TablaDummy.cs" />
+    <Compile Include="App\tablaComponentes\TablaLiterales.cs" />
+    <Compile Include="App\tablaComponentes\TablaSimbolos.cs" />
     <Compile Include="App\transversal\ComponenteLexico.cs" />
     <Compile Include="App\transversal\Cache.cs" />
     <Compile Include="App\transversal\Linea.cs" />
     <Compile Include="App\transversal\CategoriaGramatical.cs" />
     <Compile Include="App\transversal\TablaMaestra.cs" />
     <Compile Include="App\transversal\TablaSimbolos.cs" />
+    <Compile Include="App\transversal\TipoComponente.cs" />
     <Compile Include="App\transversal\TraductorMorse.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
