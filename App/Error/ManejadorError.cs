@@ -16,7 +16,7 @@ namespace CompiladorMorse.App.Error
             Reiniciar();
         }
 
-        private void Reiniciar()
+        public void Reiniciar()
         {
             errores = new Dictionary<TipoError, List<ComponenteError>>();
             errores.Add(TipoError.LEXICO, new List<ComponenteError>());

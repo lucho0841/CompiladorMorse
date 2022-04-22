@@ -1,4 +1,5 @@
-﻿using CompiladorMorse.App.modelo;
+﻿using CompiladorMorse.App.Error;
+using CompiladorMorse.App.modelo;
 using CompiladorMorse.App.transversal;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
         private int estadoActual;
         private bool continuarAnalisis = true;
         private ComponenteLexico componente;
+        public ComponenteLexico retorno = null;
 
         public AnalizadorLexico()
         {
@@ -181,6 +183,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         CrearComponenteSimbolo("?", CategoriaGramatical.ERROR, numeroDeLineaActual, puntero - 1, puntero - 1);
+                        
+                        ManejadorError.ObtenerManejadorError().agregar(
+                            ComponenteError.crearErrorLexico(numeroDeLineaActual, puntero - 1, puntero - 1,
+                            "la cadena " + caracterActual + " no está dentro del lenguaje permitido!",
+                            "cadena no reconocida dentro del lenguaje",
+                            "Asegúrese de que la cadena ingresada sea válida."));
+
                         //MessageBox.Show("Aunque el programa se encuentra bien escrito, faltaron componentes por evaluar...");
                     }
                     else if (estadoActual == 3)
@@ -438,7 +447,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
                             continuarAnalisis = false;
                             DevolverPuntero();
                             CrearComponenteSimbolo("?", CategoriaGramatical.ERROR, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
-                            //MessageBox.Show("Aunque el programa se encuentra bien escrito, faltaron componentes por evaluar...");
+                            ManejadorError.ObtenerManejadorError().agregar(
+                            ComponenteError.crearErrorLexico(numeroDeLineaActual, puntero - lexema.Length, puntero - 1,
+                            "la cadena " + lexema + " no está dentro del lenguaje permitido!",
+                            "cadena no reconocida dentro del lenguaje",
+                            "Asegúrese de que la cadena ingresada sea válida."));
                         }
                         else
                         {
@@ -1559,7 +1572,9 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_DOS_PUNTOS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        retorno = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_DOS_PUNTOS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaComponentes.Tabla.ObtenerTabla().Agregar(retorno);
+                        //CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_DOS_PUNTOS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 87)
@@ -1706,8 +1721,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     else if (estadoActual == 95)
                     {
                         continuarAnalisis = false;
-                        CrearComponenteSimbolo("", CategoriaGramatical.ERROR_CRITICO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
-                        MessageBox.Show("Error crítico, caracter no válido en " + lexema);
+                        //CrearComponenteSimbolo("", CategoriaGramatical.ERROR_CRITICO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        ManejadorError.ObtenerManejadorError().agregar(
+                            ComponenteError.crearErrorLexico(numeroDeLineaActual, puntero - 1, puntero - 1,
+                            "Se recibió el caracter " + caracterActual,
+                            "Carácter no reconocido dentro del lenguaje",
+                            "Asegúrese de que el carácter sea válido o permitido dentro del lenguaje"));
+                        throw new Exception("Error crítico de tipo léxico: Se detuvo el análisis!!!!");
 
                     }
                     else if (estadoActual == 96)

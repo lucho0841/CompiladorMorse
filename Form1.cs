@@ -1,5 +1,6 @@
 ﻿using CompiladorMorse.App;
 using CompiladorMorse.App.AnalizadorLexico;
+using CompiladorMorse.App.Error;
 using CompiladorMorse.App.transversal;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace CompiladorMorse
         private string archiveReference;
         private Cache cache;
         private string[] linesData;
+        List<ComponenteError> error = new List<ComponenteError>();
         public Form1()
         {
             InitializeComponent();
@@ -71,10 +73,12 @@ namespace CompiladorMorse
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Clear();
+            ManejadorError.ObtenerManejadorError().Reiniciar();
             txtUrlArchivo.Text = "";
             txtCodigo.Text = "";
             lbCodigo.Items.Clear();
             dataGridView1.Rows.Clear();
+            dataGridViewError.Rows.Clear();
             btnMorse.Enabled=true;
             btnTexto.Enabled=true;
             txtCodigo.Enabled = true;
@@ -171,32 +175,74 @@ namespace CompiladorMorse
 
         private void LlenarTablas()
         {
-            AnalizadorLexico analizador = new AnalizadorLexico();
-            ComponenteLexico componente = analizador.Analizador(true);
-            dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-            while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
+            try
             {
-                componente = analizador.Analizador(true);
-                if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))) {
+                AnalizadorLexico analizador = new AnalizadorLexico();
+                ComponenteLexico componente = analizador.Analizador(true);
+                if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
+                {
                     dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                } 
+                }
+                while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
+                {
+                    componente = analizador.Analizador(true);
+                    if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR)))
+                    {
+                        dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                    }
+                }
+
+                error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
+                for (int i = 0; i < error.Count; i++)
+                {
+                    dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
+                for (int i = 0; i < error.Count; i++)
+                {
+                    dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
+                }
             }
         }
 
         private void LlenarTablasConMorse()
         {
-            AnalizadorLexico analizador = new AnalizadorLexico();
-            ComponenteLexico componente = analizador.Analizador(false);
-            if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO))
+            try
             {
-                dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-            }
-            while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO)))
-            {
-                componente = analizador.Analizador(false);
-                if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)))
+                AnalizadorLexico analizador = new AnalizadorLexico();
+                ComponenteLexico componente = analizador.Analizador(false);
+
+                if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
                 {
                     dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                }
+
+                while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO)))
+                {
+                    componente = analizador.Analizador(false);
+                    if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR)))
+                    {
+                        dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                    }
+                }
+
+                error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
+                for (int i = 0; i < error.Count; i++)
+                {
+                    dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
+                for (int i = 0; i < error.Count; i++)
+                {
+                    dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
                 }
             }
         }
@@ -268,6 +314,11 @@ namespace CompiladorMorse
             txtCodigo.Enabled = false;
             txtUrlArchivo.Enabled = false;
             btnCargar.Enabled = false;
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

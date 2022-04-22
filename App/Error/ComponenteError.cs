@@ -8,7 +8,7 @@ namespace CompiladorMorse.App.Error
 {
     public class ComponenteError
     {
-        public int numeroLinea;
+        private int numeroLinea;
         private int posicionInicial;
         private int posicionFinal;
         private string causa;
@@ -16,7 +16,7 @@ namespace CompiladorMorse.App.Error
         private string solucion;
         private TipoError tipo;
 
-        private ComponenteError(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion, TipoError tipo)
+        private ComponenteError(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion)
         {
             this.numeroLinea = numeroLinea;
             this.posicionInicial = posicionInicial;
@@ -26,9 +26,14 @@ namespace CompiladorMorse.App.Error
             this.solucion = solucion;
         }
 
-        public static ComponenteError crearErrorLexico(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion, TipoError tipo)
+        public ComponenteError()
         {
-            return new ComponenteError(numeroLinea, posicionInicial, posicionFinal, causa, falla, solucion, tipo);
+
+        }
+
+        public static ComponenteError crearErrorLexico(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion)
+        {
+            return new ComponenteError(numeroLinea, posicionInicial, posicionFinal, causa, falla, solucion);
         }
 
 

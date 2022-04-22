@@ -48,10 +48,20 @@ namespace CompiladorMorse
             this.numeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.posicionInicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.posicionFinal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dataGridViewError = new System.Windows.Forms.DataGridView();
+            this.dgvNumeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvFinal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvInicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvCausa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvFalla = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvsSolucion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewError)).BeginInit();
             this.SuspendLayout();
             // 
             // btnMorse
@@ -68,6 +78,7 @@ namespace CompiladorMorse
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -239,6 +250,63 @@ namespace CompiladorMorse
             this.posicionFinal.HeaderText = "Posicion Final";
             this.posicionFinal.Name = "posicionFinal";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.dataGridViewError);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(799, 430);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Errores";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewError
+            // 
+            this.dataGridViewError.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewError.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvNumeroLinea,
+            this.dgvFinal,
+            this.dgvInicial,
+            this.dgvCausa,
+            this.dgvFalla,
+            this.dgvsSolucion});
+            this.dataGridViewError.Location = new System.Drawing.Point(24, 27);
+            this.dataGridViewError.Name = "dataGridViewError";
+            this.dataGridViewError.Size = new System.Drawing.Size(744, 341);
+            this.dataGridViewError.TabIndex = 1;
+            this.dataGridViewError.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
+            // 
+            // dgvNumeroLinea
+            // 
+            this.dgvNumeroLinea.HeaderText = "Numero de línea";
+            this.dgvNumeroLinea.Name = "dgvNumeroLinea";
+            // 
+            // dgvFinal
+            // 
+            this.dgvFinal.HeaderText = "Posicion Inicial";
+            this.dgvFinal.Name = "dgvFinal";
+            this.dgvFinal.Width = 200;
+            // 
+            // dgvInicial
+            // 
+            this.dgvInicial.HeaderText = "Posicion Final";
+            this.dgvInicial.Name = "dgvInicial";
+            // 
+            // dgvCausa
+            // 
+            this.dgvCausa.HeaderText = "Causa";
+            this.dgvCausa.Name = "dgvCausa";
+            // 
+            // dgvFalla
+            // 
+            this.dgvFalla.HeaderText = "Falla";
+            this.dgvFalla.Name = "dgvFalla";
+            // 
+            // dgvsSolucion
+            // 
+            this.dgvsSolucion.HeaderText = "Solución";
+            this.dgvsSolucion.Name = "dgvsSolucion";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -253,6 +321,8 @@ namespace CompiladorMorse
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewError)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -278,6 +348,14 @@ namespace CompiladorMorse
         private System.Windows.Forms.DataGridViewTextBoxColumn numeroLinea;
         private System.Windows.Forms.DataGridViewTextBoxColumn posicionInicial;
         private System.Windows.Forms.DataGridViewTextBoxColumn posicionFinal;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.DataGridView dataGridViewError;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvNumeroLinea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvFinal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvInicial;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCausa;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvFalla;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvsSolucion;
     }
 }
 
