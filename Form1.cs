@@ -77,7 +77,10 @@ namespace CompiladorMorse
             txtUrlArchivo.Text = "";
             txtCodigo.Text = "";
             lbCodigo.Items.Clear();
-            dataGridView1.Rows.Clear();
+            dataGridViewSimbolos.Rows.Clear();
+            dataGridViewDummys.Rows.Clear();
+            dataGridViewLiterales.Rows.Clear();
+            dataGridViewReservadas.Rows.Clear();
             dataGridViewError.Rows.Clear();
             btnMorse.Enabled=true;
             btnTexto.Enabled=true;
@@ -169,7 +172,7 @@ namespace CompiladorMorse
         {
             Cache.ObtenerCache().Limpiar();
             //TablaMaestra.Limpiar();
-            dataGridView1.Rows.Clear();
+            dataGridViewSimbolos.Rows.Clear();
             
         }
 
@@ -181,14 +184,20 @@ namespace CompiladorMorse
                 ComponenteLexico componente = analizador.Analizador(true);
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
                 {
-                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                    dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                }else
+                {
+                    dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
                 }
                 while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
                 {
                     componente = analizador.Analizador(true);
                     if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR)))
                     {
-                        dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                    } else if (componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
+                    {
+                        dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
                     }
                 }
 
@@ -218,7 +227,11 @@ namespace CompiladorMorse
 
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
                 {
-                    dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                    dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                } else
+                {
+                    dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+
                 }
 
                 while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO)))
@@ -226,7 +239,11 @@ namespace CompiladorMorse
                     componente = analizador.Analizador(false);
                     if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR)))
                     {
-                        dataGridView1.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                    }
+                    else if (componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
+                    {
+                        dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
                     }
                 }
 
