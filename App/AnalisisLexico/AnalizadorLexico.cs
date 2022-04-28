@@ -176,7 +176,175 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     else if (estadoActual == 1)
                     {
                         continuarAnalisis = false;
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        if ((caracterActual.ToLower()).Equals("A".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_A, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("B".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_B, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("C".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_C, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("D".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_D, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("E".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_E, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("F".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_F, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("G".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_G, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("H".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_H, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("I".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_I, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("J".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_J, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("K".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_K, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("L".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_L, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("M".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_M, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("N".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_N, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("O".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_O, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("P".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_P, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("Q".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_Q, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("R".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_R, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("S".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_S, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("T".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_T, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("U".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_U, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("V".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_V, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("W".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_W, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("X".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_X, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("Y".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_Y, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual.ToLower()).Equals("Z".ToLower()))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_Z, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("0"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_0, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("1"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_1, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("2"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_2, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("3"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_3, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("4"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_4, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("5"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_5, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("6"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_6, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("7"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_7, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("8"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_8, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("9"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_8, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals(","))
+                        {
+                            componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_COMA, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals(":"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_DOS_PUNTOS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("-"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_GUION, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("("))
+                        {
+                            componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_PARENTESIS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("."))
+                        {
+                            componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_PUNTO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+                        else if ((caracterActual).Equals("'"))
+                        {
+                            componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_COMILLAS, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        }
+
                     }
                     else if (estadoActual == 2)
                     {
@@ -301,7 +469,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     }
                     else if (estadoActual == 3)
                     {
-                        continuarAnalisis = false;
+                       continuarAnalisis = false;
                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.FIN_ARCHIVO, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 4)
@@ -314,7 +482,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_E, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_MORSE_E, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 6)
                     {
@@ -374,13 +542,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_B, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_B, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 9)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_I, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_MORSE_I, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 10)
                     {
@@ -440,7 +608,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_U, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_MORSE_U, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 13)
                     {
@@ -564,13 +732,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_5, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_5, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 21)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_4, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_4, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 23)
                     {
@@ -598,7 +766,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_A, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_MORSE_A, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 25)
                     {
@@ -864,7 +1032,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_6, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_6, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 36)
                     {
@@ -973,13 +1141,13 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_7, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_7, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 41)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_O, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponentePalabraReservada(lexema, CategoriaGramatical.SIMBOLO_MORSE_O, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 42)
                     {
@@ -1066,7 +1234,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_8, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_8, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 46)
                     {
@@ -1116,31 +1284,31 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_9, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_9, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 49)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_0, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_0, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 50)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_2, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_2, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 51)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_3, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_3, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 52)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_1, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_1, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 53)
                     {
@@ -1195,7 +1363,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_C, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_C, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 56)
@@ -1229,14 +1397,14 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_Y, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_Y, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 58)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_D, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_D, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
                     }
                     else if (estadoActual == 59)
                     {
@@ -1264,35 +1432,35 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_F, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_F, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 61)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_G, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_G, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 62)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_H, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_H, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 63)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_J, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_J, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 64)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_K, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_K, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 65)
@@ -1326,21 +1494,21 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_R, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_R, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 67)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_M, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_M, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 68)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_N, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_N, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 69)
@@ -1369,7 +1537,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_P, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_P, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 71)
@@ -1398,7 +1566,7 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_Q, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_Q, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 73)
@@ -1431,35 +1599,35 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_L, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_L, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 75)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_S, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_S, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 76)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_T, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_T, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 77)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_V, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_V, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 78)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_W, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_W, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 79)
@@ -1488,14 +1656,14 @@ namespace CompiladorMorse.App.AnalizadorLexico
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_X, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_X, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 81)
                     {
                         continuarAnalisis = false;
                         DevolverPuntero();
-                        componente = ComponenteLexico.CrearComponenteSimbolo(lexema, CategoriaGramatical.SIMBOLO_MORSE_Z, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
+                        componente = ComponenteLexico.CrearComponenteLiteral(lexema, CategoriaGramatical.SIMBOLO_MORSE_Z, numeroDeLineaActual, puntero - lexema.Length, puntero - 1);
 
                     }
                     else if (estadoActual == 82)
