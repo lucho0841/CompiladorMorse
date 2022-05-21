@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\AnalisisLexico\AnalizadorLexico.cs" />
+    <Compile Include="App\AnalisisSintactico\AnalizadorSintactico.cs" />
     <Compile Include="App\Error\ComponenteError.cs" />
     <Compile Include="App\Error\ManejadorError.cs" />
     <Compile Include="App\Error\TipoError.cs" />

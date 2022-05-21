@@ -29,6 +29,11 @@ namespace CompiladorMorse.App.AnalizadorLexico
             CargarNuevaLinea();
         }
 
+        public static AnalizadorLexico crear()
+        {
+            return new AnalizadorLexico();
+        }
+
         public List<string> DeconstruirCadena(string[] data)
         {
             caracteres = new List<string>();
