@@ -1,5 +1,6 @@
 ﻿using CompiladorMorse.App;
 using CompiladorMorse.App.AnalizadorLexico;
+using CompiladorMorse.App.AnalizadorSintactico;
 using CompiladorMorse.App.Error;
 using CompiladorMorse.App.transversal;
 using System;
@@ -180,8 +181,15 @@ namespace CompiladorMorse
         {
             try
             {
-                AnalizadorLexico analizador = new AnalizadorLexico();
-                ComponenteLexico componente = analizador.Analizador(true);
+
+                //AnalizadorLexico analizador = new AnalizadorLexico();
+                //ComponenteLexico componente = analizador.Analizador(true);
+
+                AnalizadorSintact AnaSin = new AnalizadorSintactico();
+                Dictionary<string, object> Resultados = AnaSin.Analizar(depurar, opcion);
+                ComponenteLexico Componente = (ComponenteLexico)Resultados["COMPONENTE"];
+                string Resultado = Convert.ToString(Resultados["RESULTADO"]);
+
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
                 {
                     if (componente.ObtenerTipo().Equals(TipoComponente.SIMBOLO))

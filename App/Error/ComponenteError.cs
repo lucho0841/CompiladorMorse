@@ -33,7 +33,17 @@ namespace CompiladorMorse.App.Error
 
         public static ComponenteError crearErrorLexico(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion)
         {
-            return new ComponenteError(numeroLinea, posicionInicial, posicionFinal, causa, falla, solucion);
+            return new ComponenteError(numeroLinea, posicionInicial, posicionFinal, causa, falla, solucion, TipoError.LEXICO);
+        }
+
+        public static ComponenteError crearErrorSintactico(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion)
+        {
+            return new ComponenteError(numeroLinea, posicionInicial, posicionFinal, causa, falla, solucion, TipoError.SINTACTICO);
+        }
+
+        public static ComponenteError crearErrorSemantico(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion)
+        {
+            return new ComponenteError(numeroLinea, posicionInicial, posicionFinal, causa, falla, solucion, TipoError.SEMANTICO);
         }
 
 
