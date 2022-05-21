@@ -16,7 +16,7 @@ namespace CompiladorMorse.App.Error
         private string solucion;
         private TipoError tipo;
 
-        private ComponenteError(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion)
+        private ComponenteError(int numeroLinea, int posicionInicial, int posicionFinal, string causa, string falla, string solucion, TipoError tipo)
         {
             this.numeroLinea = numeroLinea;
             this.posicionInicial = posicionInicial;
@@ -24,6 +24,7 @@ namespace CompiladorMorse.App.Error
             this.causa = causa;
             this.falla = falla;
             this.solucion = solucion;
+            this.tipo = tipo;
         }
 
         public ComponenteError()

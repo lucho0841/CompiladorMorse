@@ -23,7 +23,7 @@ namespace CompiladorMorse.App.TablaComponentes
 
         public void Agregar(ComponenteLexico componente)
         {
-            TablaPalabraReservada.ObtenerTabla().Agregar(componente);
+            //TablaPalabraReservada.ObtenerTabla().Agregar(componente);
         }
 
         public void Reiniciar()

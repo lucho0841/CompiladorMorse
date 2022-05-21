@@ -10,6 +10,7 @@ namespace CompiladorMorse.App.Error
     {
         private Dictionary<TipoError, List<ComponenteError>> errores;
         private static ManejadorError INSTANCIA = new ManejadorError();
+        private TipoError tipo;
 
         private ManejadorError()
         {
@@ -55,6 +56,24 @@ namespace CompiladorMorse.App.Error
                 listaErrores.AddRange(componentes);
             }
             return listaErrores;
+        }
+
+        public static void Reportar(ComponenteError Error)
+        {
+            if (Error != null)
+            {
+                ObtenerErrores(Error.ObtenerTipo()).Add(Error);
+            }
+        }
+
+        public TipoError ObtenerTipo()
+        {
+            return tipo;
+        }
+
+        public static List<ComponenteError> ObtenerErrores(TipoError Tipo)
+        {
+            return INSTANCIA.errores[Tipo];
         }
     }
 

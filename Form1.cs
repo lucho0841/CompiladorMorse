@@ -1,9 +1,11 @@
 ﻿using CompiladorMorse.App;
+using CompiladorMorse.App.AnalisisSintactico;
 using CompiladorMorse.App.AnalizadorLexico;
-using CompiladorMorse.App.AnalizadorSintactico;
 using CompiladorMorse.App.Error;
+using CompiladorMorse.App.TablaComponentes;
 using CompiladorMorse.App.transversal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,11 +15,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TablaSimbolos = CompiladorMorse.App.TablaComponentes.TablaSimbolos;
 
 namespace CompiladorMorse
 {
     public partial class Form1 : Form
     {
+        Boolean depurar = false;
+        Boolean opcion;
+
         OpenFileDialog OpenFile = new OpenFileDialog();
         StreamReader streamReader;
         private string archiveReference;
@@ -75,6 +81,7 @@ namespace CompiladorMorse
         {
             Clear();
             ManejadorError.ObtenerManejadorError().Reiniciar();
+            TablaMaestra.Limpiar();
             txtUrlArchivo.Text = "";
             txtCodigo.Text = "";
             lbCodigo.Items.Clear();
@@ -124,7 +131,6 @@ namespace CompiladorMorse
             while (true)
             {
                 string actualLine = streamReader.ReadLine();
-                lbCodigo.Items.Add(cont + " ->> " + actualLine);
                 if (actualLine != "")
                 {
                     Cache.ObtenerCache().AgregarLinea(actualLine);
@@ -142,10 +148,6 @@ namespace CompiladorMorse
         private void leerConsola()
         {
             linesData = txtCodigo.Text.Split('\n');
-            for (int cont = 1; cont <= linesData.Length; cont++)
-            {
-                lbCodigo.Items.Add(cont + " ->> " + linesData[cont - 1]);
-            }
             lbCodigo.Enabled = true;
         }
 
@@ -185,52 +187,44 @@ namespace CompiladorMorse
                 //AnalizadorLexico analizador = new AnalizadorLexico();
                 //ComponenteLexico componente = analizador.Analizador(true);
 
-                AnalizadorSintact AnaSin = new AnalizadorSintactico();
-                Dictionary<string, object> Resultados = AnaSin.Analizar(depurar, opcion);
-                ComponenteLexico Componente = (ComponenteLexico)Resultados["COMPONENTE"];
+                AnalizadorSintactico analizador = new AnalizadorSintactico();
+                opcion = false;
+                Dictionary<string, object> Resultados = analizador.Analizar(depurar, opcion);
+                ComponenteLexico componente = (ComponenteLexico)Resultados["COMPONENTE"];
                 string Resultado = Convert.ToString(Resultados["RESULTADO"]);
+                List<ComponenteLexico> listaSimbolo = TablaSimbolos.ObtenerSimbolos();
+                List<ComponenteLexico> listaLiterales = TablaLiterales.ObtenerLiterales();
+                List<ComponenteLexico> listaReservadas = TablaPalabraReservada.ObtenerPalabrasReservadas();
+                List<ComponenteLexico> listaDummys = TablaDummy.ObtenerDummys();
 
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
                 {
-                    if (componente.ObtenerTipo().Equals(TipoComponente.SIMBOLO))
+
+                    for (int i = 0; i < listaSimbolo.Count; i++)
                     {
-                        dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewSimbolos.Rows.Add(listaSimbolo[i].ObtenerLexema(), listaSimbolo[i].ObtenerCategoria(), listaSimbolo[i].ObtenerNumeroLinea(), listaSimbolo[i].ObtenerPosicionInicial(), listaSimbolo[i].ObtenerPosicionFinal());
                     }
-                    else if (componente.ObtenerTipo().Equals(TipoComponente.LITERAL))
+                    for (int i = 0; i < listaLiterales.Count; i++)
                     {
-                        dataGridViewLiterales.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewLiterales.Rows.Add(listaLiterales[i].ObtenerLexema(), listaLiterales[i].ObtenerCategoria(), listaLiterales[i].ObtenerNumeroLinea(), listaLiterales[i].ObtenerPosicionInicial(), listaLiterales[i].ObtenerPosicionFinal());
                     }
-                    else
+                    for (int i = 0; i < listaReservadas.Count; i++)
                     {
-                        dataGridViewReservadas.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewReservadas.Rows.Add(listaReservadas[i].ObtenerLexema(), listaReservadas[i].ObtenerCategoria(), listaReservadas[i].ObtenerNumeroLinea(), listaReservadas[i].ObtenerPosicionInicial(), listaReservadas[i].ObtenerPosicionFinal());
                     }
-                   
-                }else
-                {
-                    dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                }
-                while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO))
-                {
-                    componente = analizador.Analizador(true);
-                    if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR)))
+                    for (int i = 0; i < listaDummys.Count; i++)
                     {
-                        if (componente.ObtenerTipo().Equals(TipoComponente.SIMBOLO))
-                        {
-                            dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                        }
-                        else if (componente.ObtenerTipo().Equals(TipoComponente.LITERAL))
-                        {
-                            dataGridViewLiterales.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                        }
-                        else
-                        {
-                            dataGridViewReservadas.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                        }
-                    } else if (componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
-                    {
-                        dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewDummys.Rows.Add(listaDummys[i].ObtenerLexema(), listaDummys[i].ObtenerCategoria(), listaDummys[i].ObtenerNumeroLinea(), listaDummys[i].ObtenerPosicionInicial(), listaDummys[i].ObtenerPosicionFinal());
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < listaDummys.Count; i++)
+                    {
+                        dataGridViewDummys.Rows.Add(listaDummys[i].ObtenerLexema(), listaDummys[i].ObtenerCategoria(), listaDummys[i].ObtenerNumeroLinea(), listaDummys[i].ObtenerPosicionInicial(), listaDummys[i].ObtenerPosicionFinal());
+                    }
+                }
+                lbCodigo.Items.Add(Resultado);
 
                 error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
                 for (int i = 0; i < error.Count; i++)
@@ -253,53 +247,43 @@ namespace CompiladorMorse
         {
             try
             {
-                AnalizadorLexico analizador = new AnalizadorLexico();
-                ComponenteLexico componente = analizador.Analizador(false);
+                AnalizadorSintactico analizador = new AnalizadorSintactico();
+                opcion = true;
+                Dictionary<string, object> Resultados = analizador.Analizar(depurar, opcion);
+                ComponenteLexico componente = (ComponenteLexico)Resultados["COMPONENTE"];
+                string Resultado = Convert.ToString(Resultados["RESULTADO"]);
+                List<ComponenteLexico> listaSimbolo = TablaSimbolos.ObtenerSimbolos();
+                List<ComponenteLexico> listaLiterales = TablaLiterales.ObtenerLiterales();
+                List<ComponenteLexico> listaReservadas = TablaPalabraReservada.ObtenerPalabrasReservadas();
+                List<ComponenteLexico> listaDummys = TablaDummy.ObtenerDummys();
 
                 if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
                 {
-                    if (componente.ObtenerTipo().Equals(TipoComponente.SIMBOLO))
+                    for (int i = 0; i < listaSimbolo.Count; i++)
                     {
-                        dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewSimbolos.Rows.Add(listaSimbolo[i].ObtenerLexema(), listaSimbolo[i].ObtenerCategoria(), listaSimbolo[i].ObtenerNumeroLinea(), listaSimbolo[i].ObtenerPosicionInicial(), listaSimbolo[i].ObtenerPosicionFinal());
                     }
-                    else if (componente.ObtenerTipo().Equals(TipoComponente.LITERAL))
+                    for (int i = 0; i < listaLiterales.Count; i++)
                     {
-                        dataGridViewLiterales.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewLiterales.Rows.Add(listaLiterales[i].ObtenerLexema(), listaLiterales[i].ObtenerCategoria(), listaLiterales[i].ObtenerNumeroLinea(), listaLiterales[i].ObtenerPosicionInicial(), listaLiterales[i].ObtenerPosicionFinal());
                     }
-                    else
+                    for (int i = 0; i < listaReservadas.Count; i++)
                     {
-                        dataGridViewReservadas.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewReservadas.Rows.Add(listaReservadas[i].ObtenerLexema(), listaReservadas[i].ObtenerCategoria(), listaReservadas[i].ObtenerNumeroLinea(), listaReservadas[i].ObtenerPosicionInicial(), listaReservadas[i].ObtenerPosicionFinal());
                     }
-                   
+                    for (int i = 0; i < listaDummys.Count; i++)
+                    {
+                        dataGridViewDummys.Rows.Add(listaDummys[i].ObtenerLexema(), listaDummys[i].ObtenerCategoria(), listaDummys[i].ObtenerNumeroLinea(), listaDummys[i].ObtenerPosicionInicial(), listaDummys[i].ObtenerPosicionFinal());
+                    }
+
                 } else
                 {
-                    dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-
-                }
-
-                while (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR_CRITICO)))
-                {
-                    componente = analizador.Analizador(false);
-                    if (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_LINEA) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.FIN_ARCHIVO)) && (!componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR)))
+                    for (int i = 0; i < listaDummys.Count; i++)
                     {
-                        if (componente.ObtenerTipo().Equals(TipoComponente.SIMBOLO))
-                        {
-                            dataGridViewSimbolos.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                        }
-                        else if (componente.ObtenerTipo().Equals(TipoComponente.LITERAL))
-                        {
-                            dataGridViewLiterales.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                        }
-                        else
-                        {
-                            dataGridViewReservadas.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
-                        }
-                    }
-                    else if (componente.ObtenerCategoria().Equals(CategoriaGramatical.ERROR))
-                    {
-                        dataGridViewDummys.Rows.Add(componente.ObtenerLexema(), componente.ObtenerCategoria(), componente.ObtenerNumeroLinea(), componente.ObtenerPosicionInicial(), componente.ObtenerPosicionFinal());
+                        dataGridViewDummys.Rows.Add(listaDummys[i].ObtenerLexema(), listaDummys[i].ObtenerCategoria(), listaDummys[i].ObtenerNumeroLinea(), listaDummys[i].ObtenerPosicionInicial(), listaDummys[i].ObtenerPosicionFinal());
                     }
                 }
+                lbCodigo.Items.Add(Resultado);
 
                 error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
                 for (int i = 0; i < error.Count; i++)
