@@ -34,20 +34,23 @@ namespace CompiladorMorse.App.AnalisisSintactico
             {
 
                 pedirComponenteMorse();
-                Morse();
-                if (depurar)
+                Morse(0);
+                /*if (depurar)
                 {
                     MessageBox.Show(TrazaDerivacion.ToString());
-                }
+                }*/
+                MessageBox.Show(TrazaDerivacion.ToString());
             }
             else
             {
                 pedirComponente();
-                Latin();
-                if (depurar)
+                Latin(0);
+                /*if (depurar)
                 {
                     MessageBox.Show(TrazaDerivacion.ToString());
-                }
+                }*/
+
+                MessageBox.Show(TrazaDerivacion.ToString());
             }
 
             Respuesta.Add("COMPONENTE", componente);
@@ -66,31 +69,35 @@ namespace CompiladorMorse.App.AnalisisSintactico
         }
 
         //<latin>:: <alfabeto><latin>
-        private void Latin()
+        private void Latin(int jerarquia)
         {
             if (!CategoriaGramatical.FIN_ARCHIVO.Equals(componente.ObtenerCategoria()))
             {
-                alfabeto();
-                Latin();
+                TrazarEntrada("<Latin>", jerarquia);
+                alfabeto(jerarquia + 1);
+                Latin(jerarquia +1 );
+                TrazarSalida("</Latin>", jerarquia);
             }
             
-            //TrazarEntrada("<Latin>", jerarquia);
-            
-            //TrazarSalida("</Latin>", jerarquia);
         }
 
-        private void Morse()
+
+        //<Morse>:: <alfabetoMorse><Morse>
+        private void Morse(int jerarquia)
         {
             if (!CategoriaGramatical.FIN_ARCHIVO.Equals(componente.ObtenerCategoria()))
             {
-                alfabetoMorse();
-                Morse();
+                TrazarEntrada("<Morse>", jerarquia);
+                alfabetoMorse(jerarquia + 1);
+                Morse(jerarquia + 1);
+                TrazarSalida("</Morse>", jerarquia);
             }
         }
 
         // <alfabeto>:= SIMBOLO_A|SIMBOLO_B| SIMBOLO_C | SIMBOLO_D |SIMBOLO_E | SIMBOLO_F |SIMBOLO_G |SIMBOLO_H| SIMBOLO_I | SIMBOLO_J |SIMBOLO_K |SIMBOLO_L |SIMBOLO_M |SIMBOLO_N | SIMBOLO_O | SIMBOLO_P | SIMBOLO_Q | SIMBOLO_R |SIMBOLO_S |SIMBOLO _T | SIMBOLO_U | SIMBOLO_V | SIMBOLO_W | SIMBOLO_X | SIMBOLO_Y | SIMBOLO_Z | SIMBOLO_1| SIMBOLO_2| SIMBOLO_3| SIMBOLO_4| SIMBOLO_5| SIMBOLO_6| SIMBOLO_7| SIMBOLO_8| SIMBOLO_9| SIMBOLO_0 | SIMBOLO_COMA | SIMBOLO_DOS_PUNTOS | SIMBOLO_GUION| SIMBOLO_PARENTESIS| SIMBOLO_COMILLAS|SIMBOLO_PUNTO
-        private void alfabeto()
+        private void alfabeto(int jerarquia)
         {
+            TrazarEntrada("<alfabeto>", jerarquia);
             if (CategoriaGramatical.SIMBOLO_A.Equals(componente.ObtenerCategoria()))
             {
                 FormarResultadoLatin(componente);
@@ -331,11 +338,15 @@ namespace CompiladorMorse.App.AnalisisSintactico
                     falla,
                     solucion);
                 throw new Exception("Se ha presentado un error de tipo stopper dentro del proceso de compilacion. Por favor revise la consola de errores...");
+                //MessageBox.Show("Se ha presentado un error de tipo stopper dentro del proceso de compilacion. Por favor revise la consola de errores...");
             }
+
+            TrazarSalida("</alfabeto>", jerarquia);
         }
 
-        private void alfabetoMorse()
+        private void alfabetoMorse(int jerarquia)
         {
+            TrazarEntrada("<alfabetoMorse>", jerarquia);
             if (CategoriaGramatical.SIMBOLO_MORSE_A.Equals(componente.ObtenerCategoria()))
             {
                 formarResultadoMorse(componente);
@@ -541,6 +552,11 @@ namespace CompiladorMorse.App.AnalisisSintactico
             {
                 pedirComponenteMorse();
             }
+            else if (CategoriaGramatical.SEPARADOR_MORSE.Equals(componente.ObtenerCategoria()))
+            {
+                formarResultadoMorse(componente);
+                pedirComponenteMorse();
+            }
             else
             {
                 string causa = "Caracter leido no valido " + componente.ObtenerLexema();
@@ -555,7 +571,9 @@ namespace CompiladorMorse.App.AnalisisSintactico
                     falla,
                     solucion);
                 throw new Exception("Se ha presentado un error de tipo stopper dentro del proceso de compilacion. Por favor revise la consola de errores...");
+                //MessageBox.Show("Se ha presentado un error de tipo stopper dentro del proceso de compilacion. Por favor revise la consola de errores...");
             }
+            TrazarSalida("</alfabetoMorse>", jerarquia);
 
         }
 
@@ -694,7 +712,7 @@ namespace CompiladorMorse.App.AnalisisSintactico
                     Resultado.Append(".-.-.- ");
                     break;
                 case " ":
-                    Resultado.Append(" ");
+                    Resultado.Append(" / ");
                     break;
                 case "@FL@":
                     if (SaltoLinea)
@@ -847,6 +865,9 @@ namespace CompiladorMorse.App.AnalisisSintactico
                 case " ":
                     Resultado.Append(" ");
                     break;
+                case "/":
+                    Resultado.Append(" ");
+                    break;
                 case "@FL@":
                     if (SaltoLinea)
                     {
@@ -858,6 +879,31 @@ namespace CompiladorMorse.App.AnalisisSintactico
                     Resultado.Append("#");
                     break;
             }
+        }
+
+        private void TrazarEntrada(string NombreRegla, int jerarquia)
+        {
+            TrazaDerivacion.Append(FormarCadenaEspaciosBlanco(jerarquia));
+            TrazaDerivacion.Append(NombreRegla).Append("(").Append(componente.ObtenerCategoria()).Append(")");
+            TrazaDerivacion.Append(Environment.NewLine);
+
+        }
+        private void TrazarSalida(string NombreRegla, int jerarquia)
+        {
+            TrazaDerivacion.Append(FormarCadenaEspaciosBlanco(jerarquia));
+            TrazaDerivacion.Append(NombreRegla);
+            TrazaDerivacion.Append(Environment.NewLine);
+
+        }
+
+        private string FormarCadenaEspaciosBlanco(int jerarquia)
+        {
+            String EspaciosBlanco = "";
+            for (int i = 1; i <= jerarquia; i++)
+            {
+                EspaciosBlanco = EspaciosBlanco + " | ";
+            }
+            return EspaciosBlanco;
         }
 
     }

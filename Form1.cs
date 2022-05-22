@@ -231,9 +231,46 @@ namespace CompiladorMorse
                 {
                     dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
                 }
+
+                if (ManejadorError.HayErrores())
+                {
+                    MessageBox.Show("Hay problemas de compilacion. Revise la información de los errores encontrados...");
+                }
+                else if (CategoriaGramatical.FIN_ARCHIVO.Equals(componente.ObtenerCategoria()))
+                {
+                    MessageBox.Show("El programa se encuentra bien escrito");
+                    //MessageBox.Show(Resultado);
+                    //salidaDatos.Text = Resultado;
+                }
+                else
+                {
+                    MessageBox.Show("Aunque el programa se encuentra bien escrito, faltaron componente por evaluar...");
+                }
             }
             catch (Exception ex)
             {
+                List<ComponenteLexico> listaSimbolo = TablaSimbolos.ObtenerSimbolos();
+                List<ComponenteLexico> listaLiterales = TablaLiterales.ObtenerLiterales();
+                List<ComponenteLexico> listaReservadas = TablaPalabraReservada.ObtenerPalabrasReservadas();
+                List<ComponenteLexico> listaDummys = TablaDummy.ObtenerDummys();
+
+                for (int i = 0; i < listaSimbolo.Count; i++)
+                {
+                    dataGridViewSimbolos.Rows.Add(listaSimbolo[i].ObtenerLexema(), listaSimbolo[i].ObtenerCategoria(), listaSimbolo[i].ObtenerNumeroLinea(), listaSimbolo[i].ObtenerPosicionInicial(), listaSimbolo[i].ObtenerPosicionFinal());
+                }
+                for (int i = 0; i < listaLiterales.Count; i++)
+                {
+                    dataGridViewLiterales.Rows.Add(listaLiterales[i].ObtenerLexema(), listaLiterales[i].ObtenerCategoria(), listaLiterales[i].ObtenerNumeroLinea(), listaLiterales[i].ObtenerPosicionInicial(), listaLiterales[i].ObtenerPosicionFinal());
+                }
+                for (int i = 0; i < listaReservadas.Count; i++)
+                {
+                    dataGridViewReservadas.Rows.Add(listaReservadas[i].ObtenerLexema(), listaReservadas[i].ObtenerCategoria(), listaReservadas[i].ObtenerNumeroLinea(), listaReservadas[i].ObtenerPosicionInicial(), listaReservadas[i].ObtenerPosicionFinal());
+                }
+                for (int i = 0; i < listaDummys.Count; i++)
+                {
+                    dataGridViewDummys.Rows.Add(listaDummys[i].ObtenerLexema(), listaDummys[i].ObtenerCategoria(), listaDummys[i].ObtenerNumeroLinea(), listaDummys[i].ObtenerPosicionInicial(), listaDummys[i].ObtenerPosicionFinal());
+                }
+
                 MessageBox.Show(ex.Message);
                 error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
                 for (int i = 0; i < error.Count; i++)
@@ -241,6 +278,8 @@ namespace CompiladorMorse
                     dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
                 }
             }
+
+            
         }
 
         private void LlenarTablasConMorse()
@@ -290,9 +329,45 @@ namespace CompiladorMorse
                 {
                     dataGridViewError.Rows.Add(error[i].ObtenerNumeroLinea(), error[i].ObtenerPosicionInicial(), error[i].ObtenerPosicionFinal(), error[i].ObtenerCausa(), error[i].ObtenerFalla(), error[i].ObtenerSolucion());
                 }
+
+
+                if (ManejadorError.HayErrores())
+                {
+                    MessageBox.Show("Hay problemas de compilacion. Revise la información de los errores encontrados...");
+                }
+                else if (CategoriaGramatical.FIN_ARCHIVO.Equals(componente.ObtenerCategoria()))
+                {
+                    MessageBox.Show("El programa se encuentra bien escrito");
+                }
+                else
+                {
+                    MessageBox.Show("Aunque el programa se encuentra bien escrito, faltaron componente por evaluar...");
+                }
             }
             catch (Exception ex)
             {
+                List<ComponenteLexico> listaSimbolo = TablaSimbolos.ObtenerSimbolos();
+                List<ComponenteLexico> listaLiterales = TablaLiterales.ObtenerLiterales();
+                List<ComponenteLexico> listaReservadas = TablaPalabraReservada.ObtenerPalabrasReservadas();
+                List<ComponenteLexico> listaDummys = TablaDummy.ObtenerDummys();
+
+                for (int i = 0; i < listaSimbolo.Count; i++)
+                {
+                    dataGridViewSimbolos.Rows.Add(listaSimbolo[i].ObtenerLexema(), listaSimbolo[i].ObtenerCategoria(), listaSimbolo[i].ObtenerNumeroLinea(), listaSimbolo[i].ObtenerPosicionInicial(), listaSimbolo[i].ObtenerPosicionFinal());
+                }
+                for (int i = 0; i < listaLiterales.Count; i++)
+                {
+                    dataGridViewLiterales.Rows.Add(listaLiterales[i].ObtenerLexema(), listaLiterales[i].ObtenerCategoria(), listaLiterales[i].ObtenerNumeroLinea(), listaLiterales[i].ObtenerPosicionInicial(), listaLiterales[i].ObtenerPosicionFinal());
+                }
+                for (int i = 0; i < listaReservadas.Count; i++)
+                {
+                    dataGridViewReservadas.Rows.Add(listaReservadas[i].ObtenerLexema(), listaReservadas[i].ObtenerCategoria(), listaReservadas[i].ObtenerNumeroLinea(), listaReservadas[i].ObtenerPosicionInicial(), listaReservadas[i].ObtenerPosicionFinal());
+                }
+                for (int i = 0; i < listaDummys.Count; i++)
+                {
+                    dataGridViewDummys.Rows.Add(listaDummys[i].ObtenerLexema(), listaDummys[i].ObtenerCategoria(), listaDummys[i].ObtenerNumeroLinea(), listaDummys[i].ObtenerPosicionInicial(), listaDummys[i].ObtenerPosicionFinal());
+                }
+
                 MessageBox.Show(ex.Message);
                 error = ManejadorError.ObtenerManejadorError().ObtenerErrores();
                 for (int i = 0; i < error.Count; i++)

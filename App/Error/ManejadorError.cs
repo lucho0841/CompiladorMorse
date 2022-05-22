@@ -75,6 +75,29 @@ namespace CompiladorMorse.App.Error
         {
             return INSTANCIA.errores[Tipo];
         }
+
+        public static bool HayErrores()
+        {
+            return HayErroresLexicos() || HayErroresSemanticos() || HayErroresSintancticos();
+        }
+
+        public static bool HayErroresLexicos()
+        {
+            return HayErrores(TipoError.LEXICO);
+        }
+        public static bool HayErroresSintancticos()
+        {
+            return HayErrores(TipoError.SINTACTICO);
+        }
+        public static bool HayErroresSemanticos()
+        {
+            return HayErrores(TipoError.SEMANTICO);
+        }
+
+        public static bool HayErrores(TipoError Tipo)
+        {
+            return ObtenerErrores(Tipo).Count > 0;
+        }
     }
 
 
