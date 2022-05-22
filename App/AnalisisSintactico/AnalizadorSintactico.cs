@@ -35,22 +35,19 @@ namespace CompiladorMorse.App.AnalisisSintactico
 
                 pedirComponenteMorse();
                 Morse(0);
-                /*if (depurar)
+                if (depurar)
                 {
                     MessageBox.Show(TrazaDerivacion.ToString());
-                }*/
-                MessageBox.Show(TrazaDerivacion.ToString());
+                }
             }
             else
             {
                 pedirComponente();
                 Latin(0);
-                /*if (depurar)
+                if (depurar)
                 {
                     MessageBox.Show(TrazaDerivacion.ToString());
-                }*/
-
-                MessageBox.Show(TrazaDerivacion.ToString());
+                }
             }
 
             Respuesta.Add("COMPONENTE", componente);
